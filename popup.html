@@ -1,0 +1,2449 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GSC API Keyword Data</title>
+  <meta charset="UTF-8">
+  <!-- Performance optimization: Prioritize critical CSS -->
+  <link rel="stylesheet" href="css/critical.css">
+  <!-- Defer non-critical CSS and scripts -->
+  <link rel="stylesheet" href="css/main.css" media="print" id="main-css">
+  <noscript><link rel="stylesheet" href="css/main.css"></noscript>
+  <script src="chart.min.js" defer></script>
+  <script src="js/ctrPositionChart.js" defer></script>
+  
+  <!-- Only include critical inline styles that are needed for initial render -->
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'SF Pro Display', sans-serif;
+      width: 800px;
+      min-height: 550px;
+      margin: 0;
+      padding: 16px;
+      box-sizing: border-box;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #202124;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e8f0fe 100%);
+      overflow-x: hidden;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: #1a73e8;
+    }
+    
+    .premium-banner {
+      background-color: #e8f0fe;
+      border-left: 4px solid #1a73e8;
+      padding: 8px 12px;
+      margin-bottom: 15px;
+      font-size: 13px;
+      color: #1a73e8;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .premium-badge {
+      background-color: #1a73e8;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    
+    .coming-soon {
+      color: #5f6368;
+      font-size: 11px;
+      margin-left: 5px;
+    }
+
+    button {
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.025em;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      background-image: linear-gradient(135deg, #6c757d, #495057);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:hover {
+       transform: translateY(-2px);
+       box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+       filter: brightness(1.05);
+    }
+     button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+     }
+
+    button:disabled {
+      background-image: linear-gradient(to right bottom, #adb5bd, #9fa6ad); /* Disabled grey gradient */
+      cursor: not-allowed;
+      opacity: 0.7;
+      filter: grayscale(50%);
+    }
+
+    /* --- Auth Controls --- */
+     .auth-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 10px;
+        gap: 10px;
+    }
+    .auth-status {
+        font-size: 12px;
+        color: #666;
+        margin-right: auto; /* Pushes status text left */
+    }
+    #authSignIn { background-color: #34a853; }
+    #authSignIn:hover { 
+      background-color: #167c4d; 
+      background: rgba(255,255,255,0.3) !important;
+    }
+    #authSignOut { background-color: #ea4335; }
+    #authSignOut:hover { 
+      background-color: #b72d1d; 
+      background: rgba(234,67,53,1) !important;
+    }
+
+    /* Open Full Screen Button Styles */
+    #openFullScreenBtn {
+      margin-right: auto; /* Pushes this button to the far left */
+      background-image: linear-gradient(135deg, #5bc0de, #31708f); /* Info blue gradient */
+    }
+    #openFullScreenBtn:hover {
+      filter: brightness(1.1);
+    }
+
+    /* --- Collapsible Sections --- */
+    .collapsible-section {
+        margin-bottom: 15px;
+    }
+    
+    .collapsible-toggle {
+        /* width: 100%; /* REMOVED */
+        /* Inherits base button styles like padding, border-radius */
+        background-image: linear-gradient(to right bottom, #6ba8fd, #4285f4); /* Light blue gradient */
+        color: white;
+        /* Default style for toggles */
+        text-align: left;
+        font-weight: 500; /* Keep or adjust */
+        border: none; /* Override default button border if any */
+        /* transition: filter 0.2s ease-in-out; /* Inherited */
+    }
+    
+    /* Hover effect inherited from base button */
+    /* .collapsible-toggle:hover { ... } */
+    
+    .collapsible-content {
+        display: none;
+        padding-top: 10px;
+        overflow: hidden;
+    }
+    
+    .collapsible-content.expanded {
+        display: block;
+    }
+
+    /* --- Settings & Actions --- */
+    /* Note: Main layout and visual styles moved to critical.css to prevent FOUC */
+    
+    /* New style for inline grouping in settings */
+    .setting-group-inline {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 12px;
+        align-items: flex-end;
+        flex-grow: 1;
+    }
+
+    .comparison-group {
+        margin-top: 10px; /* Space above comparison options */
+        padding: 10px;
+        border: 1px dashed #ccc; /* Visual grouping */
+        border-radius: 4px;
+        background-color: #f8f9fa;
+    }
+    .comparison-group label { /* General label for the group */
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    .comparison-options { /* Container for radio buttons */
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 5px;
+    }
+    .comparison-options label { /* Style for radio button labels */
+        font-size: 13px;
+        font-weight: normal;
+        color: #333;
+        margin-bottom: 0;
+        display: inline-flex; /* Align radio and text */
+        align-items: center;
+        cursor: pointer;
+    }
+     .comparison-options input[type="radio"] {
+        margin-right: 6px;
+     }
+
+
+    .domain-toggle {
+      display: flex;
+      align-items: center;
+      padding-top: 20px; /* Align with bottom of other controls */
+      margin-left: 10px;
+      position: relative; /* Added for tooltip positioning */
+    }
+    .domain-toggle input {
+        margin-right: 5px;
+    }
+
+    .action-container {
+      display: flex;
+      align-items: center; /* Vertically align buttons if they wrap */
+      margin-bottom: 15px; /* Ensure space before metrics */
+      flex-wrap: wrap;
+      gap: 12px; /* Slightly increased gap */
+      position: relative;
+      z-index: 20;
+    }
+
+    /* Specific Action Button Styles */
+    #fetchApiData {
+        background-image: linear-gradient(135deg, #4285f4, #1a73e8);
+        padding: 12px 24px;
+        font-size: 15px;
+        font-weight: 600;
+    }
+    /* Removed specific style for #fetch-options-toggle as standalone button */
+
+    #copyData, #exportBtn {
+         background-image: linear-gradient(135deg, #34a853, #2e7d32);
+    }
+     /* Ensure export dropdown buttons inherit base style */
+    .dropdown-content button {
+        /* Reset to look like normal text buttons inside dropdown */
+        background-image: none;
+        background-color: transparent;
+        color: #333;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: normal;
+        text-align: left;
+        width: 100%;
+        border-radius: 0;
+        transition: background-color 0.2s;
+    }
+    .dropdown-content button:hover {
+        background-color: #f1f1f1;
+        filter: none; /* Remove brightness filter */
+    }
+    #clearData {
+        background-image: linear-gradient(135deg, #ea4335, #d32f2f);
+    }
+
+    /* --- Split Button Styles --- */
+    .split-button-container {
+        display: inline-flex; /* Keep button parts together */
+        position: relative; /* For dropdown positioning */
+        vertical-align: middle; /* Align with other buttons */
+    }
+    #fetchApiData {
+        /* Keep existing styles, adjust radius */
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        margin-right: 0; /* Remove potential gap */
+    }
+    .split-button-trigger {
+        /* Inherit base button styles */
+        background-image: linear-gradient(to right bottom, #5c9dff, #1a73e8); /* Match main button gradient */
+        color: white;
+        padding: 12px 8px; /* Match main button height, less horizontal padding */
+        font-size: 10px; /* Smaller arrow */
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-left: 1px solid rgba(255, 255, 255, 0.3); /* Subtle separator */
+        margin-left: 0; /* Remove potential gap */
+        line-height: 1; /* Center arrow better */
+    }
+    .split-button-trigger:hover {
+        filter: brightness(1.15); /* Slightly more brightness on hover */
+    }
+    .split-button-dropdown-content {
+        display: none; /* Hidden by default */
+        position: absolute;
+        top: 100%; /* Position below the button */
+        left: 0;
+        background-color: #ffffff;
+        min-width: 300px; /* Adjust as needed */
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+        border-radius: 4px;
+        padding: 15px;
+        z-index: 100; /* Ensure above other elements */
+        margin-top: 2px;
+        border: 1px solid #ddd;
+    }
+    /* Re-apply styles needed for content within dropdown */
+    .split-button-dropdown-content .setting-group {
+        margin-bottom: 10px;
+    }
+    .split-button-dropdown-content label {
+         font-size: 12px; color: #666; margin-bottom: 5px; display: block;
+    }
+     .split-button-dropdown-content select,
+     .split-button-dropdown-content input[type="checkbox"] {
+         padding: 5px;
+         margin-bottom: 5px;
+     }
+     .split-button-dropdown-content .comparison-group {
+         padding: 10px; border: 1px dashed #ccc; border-radius: 4px; background-color: #f8f9fa;
+     }
+     .split-button-dropdown-content .comparison-options {
+         display: flex; flex-direction: column; gap: 5px; margin-top: 5px;
+     }
+     .split-button-dropdown-content .comparison-options label {
+         font-size: 13px; font-weight: normal; color: #333; margin-bottom: 0; display: inline-flex; align-items: center; cursor: pointer;
+     }
+     .split-button-dropdown-content .comparison-options input[type="radio"] {
+         margin-right: 6px;
+     }
+     .split-button-dropdown-content .advanced-options-container {
+         display: flex; gap: 15px; margin-bottom: 0; /* Remove bottom margin inside dropdown */
+    }
+
+    #status {
+      font-size: 12px;
+      color: #666;
+      margin-left: auto;
+      white-space: nowrap;
+      /* Ensure status doesn't prevent metrics from clearing */
+      flex-shrink: 0;
+    }
+
+    /* --- Metrics Panel (FIXED CSS) --- */
+    #metricsSummary {
+      display: flex;
+      justify-content: space-between; /* Evenly distribute space between cards */
+      margin-bottom: 20px;
+      gap: 10px; /* Reduced gap for better fit */
+      width: 100%;
+      box-sizing: border-box;
+      flex-wrap: nowrap; /* Prevent wrapping */
+    }
+    .metric-card {
+      flex: 1;
+      min-width: 0;
+      width: 25%;
+      padding: 20px 16px;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card:hover { 
+      transform: translateY(-4px) scale(1.02); 
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--card-accent-color, #4285f4), var(--card-accent-secondary, #34a853));
+    }
+    /* Color styles with CSS custom properties */
+    .metric-card:nth-child(1) { 
+      --card-accent-color: #4285f4; 
+      --card-accent-secondary: #5a9fd8;
+      background: linear-gradient(135deg, rgba(232, 240, 254, 0.9), rgba(255, 255, 255, 0.95));
+    }
+    .metric-card:nth-child(2) { 
+      --card-accent-color: #fbbc04; 
+      --card-accent-secondary: #fdd835;
+      background: linear-gradient(135deg, rgba(254, 247, 224, 0.9), rgba(255, 255, 255, 0.95));
+    }
+    .metric-card:nth-child(3) { 
+      --card-accent-color: #34a853; 
+      --card-accent-secondary: #66bb6a;
+      background: linear-gradient(135deg, rgba(230, 244, 234, 0.9), rgba(255, 255, 255, 0.95));
+    }
+    .metric-card:nth-child(4) { 
+      --card-accent-color: #ea4335; 
+      --card-accent-secondary: #ef5350;
+      background: linear-gradient(135deg, rgba(252, 232, 230, 0.9), rgba(255, 255, 255, 0.95));
+    }
+
+    .metric-value {
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 1.2; /* Adjust line height */
+      text-align: center;
+      margin-bottom: 5px; /* Add small space between value and label */
+    }
+     /* Color styles */
+    .metric-card:nth-child(1) .metric-value { color: #4285f4; }
+    .metric-card:nth-child(2) .metric-value { color: #fbbc04; }
+    .metric-card:nth-child(3) .metric-value { color: #34a853; }
+    .metric-card:nth-child(4) .metric-value { color: #ea4335; }
+
+    .metric-label {
+      font-size: 13px;
+      color: #5f6368;
+      font-weight: 500;
+      text-align: center;
+    }
+
+
+    /* --- Search & Filters --- */
+    .search-filter-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        justify-content: flex-start;
+        position: relative; /* For stacking context */
+        z-index: 15; /* Above table header (z-index: 10) */
+    }
+
+    /* Enhanced Search and Pagination */
+    #searchKeywords {
+      width: 250px;
+      max-width: 300px;
+      padding: 10px 16px 10px 40px;
+      border: 2px solid #e8eaed;
+      border-radius: 24px;
+      font-size: 14px;
+      background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%23666"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>') no-repeat 12px center;
+      background-size: 16px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      box-sizing: border-box;
+    }
+
+    #searchKeywords:focus {
+      border-color: #4285f4;
+      box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1), 0 2px 8px rgba(0, 0, 0, 0.1);
+      outline: none;
+    }
+
+    #searchKeywords::placeholder {
+      color: #9aa0a6;
+      font-style: italic;
+    }
+
+    /* Pagination improvements */
+    .pagination-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .pagination-info {
+      font-size: 13px;
+      color: #5f6368;
+      font-weight: 500;
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .pagination-controls button {
+      padding: 8px 12px;
+      border: 1px solid #dadce0;
+      background: white;
+      color: #3c4043;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-controls button:hover:not(:disabled) {
+      background: #f8f9fa;
+      border-color: #c6c9cc;
+    }
+
+    .pagination-controls button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-controls button.active {
+      background: #1a73e8;
+      color: white;
+      border-color: #1a73e8;
+    }
+
+    /* Enhanced filter pills */
+    .filter-pills-container {
+      display: flex;
+      gap: 8px;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+
+    .filter-pill {
+      padding: 6px 12px;
+      background: rgba(26, 115, 232, 0.1);
+      color: #1a73e8;
+      border: 1px solid rgba(26, 115, 232, 0.2);
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-pill:hover {
+      background: rgba(26, 115, 232, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .filter-pill.active {
+      background: #1a73e8;
+      color: white;
+      border-color: #1a73e8;
+    }
+
+    /* --- Filter Dropdowns --- */
+    .filter-dropdown-container {
+      display: flex; /* Arrange dropdowns horizontally */
+      align-items: center; /* Vertically align filter dropdown and analysis button */
+      gap: 10px; /* Space between dropdown buttons */
+      /* margin-bottom: 10px; /* Removed, handled by search-filter-container */
+    }
+
+    .filter-dropdown {
+      position: relative; /* Needed for absolute positioning of content */
+      display: inline-block;
+    }
+
+    .filter-dropdown-btn {
+       /* Inherits base button styles like padding, border-radius */
+       background-image: linear-gradient(to right bottom, #6ba8fd, #4285f4); /* Blue gradient to match Advanced Analysis */
+       color: white;
+       font-size: 14px; /* Match other buttons */
+       font-weight: 500;
+       border: none;
+       /* transition: filter 0.2s ease-in-out; /* Inherited */
+    }
+
+    /* Hover effect inherited */
+    /* .filter-dropdown-btn:hover { ... } */
+
+    .filter-dropdown-content {
+      display: none; /* Hidden by default */
+      position: absolute;
+      background-color: #ffffff; /* White background */
+      min-width: 200px; /* Adjust as needed */
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.15); /* Nice shadow */
+      border-radius: 4px;
+      padding: 10px;
+      z-index: 100; /* Ensure above other elements */
+      margin-top: 2px;
+      /* Arrange pills vertically within dropdown */
+      /* display: flex; <-- REMOVE THIS LINE, it should only be applied on hover */
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    /* Style pills specifically within the dropdown */
+    .filter-dropdown-content .filter-pill {
+       margin: 0; /* Remove any default margins */
+       width: 100%; /* Make pills take full width */
+       box-sizing: border-box;
+       text-align: left;
+    }
+    /* Styles for single dropdown content */
+    .filter-dropdown-content-main {
+       min-width: 220px; /* May need slightly wider */
+    }
+    /* --- Two Column Dropdown Layout --- */
+    .two-column-dropdown {
+      /* display: flex; <-- REMOVED: JS handles toggling display between none/flex */
+      flex-direction: row; /* Arrange columns side-by-side */
+      gap: 15px; /* Space between columns */
+      min-width: 390px; /* Reduced from 450px */
+      padding: 15px; /* More padding */
+    }
+
+    .filter-pills-column {
+      flex: 1; /* Allow pills column to take available space */
+      min-width: 170px; /* Reduced from 180px */
+    }
+
+    .explanations-column {
+      flex: 1; /* Allow explanations column to take available space */
+      min-width: 170px; /* Reduced from 200px */
+      border-left: 1px solid #eee; /* Separator line */
+      padding-left: 15px; /* Space left of the line */
+    }
+
+    .explanations-content-static { /* Style the static explanation area */
+       font-size: 11px;
+       color: #666;
+       max-height: 250px; /* Adjust max height if needed */
+       overflow-y: auto; /* Add scrollbar if content exceeds max height */
+    }
+     .explanations-content-static ul { padding-left: 15px; margin: 0; }
+     .explanations-content-static li { margin-bottom: 5px; line-height: 1.4; }
+
+    .filter-group-heading {
+      font-size: 11px;
+      font-weight: bold;
+      color: #5f6368;
+      margin: 8px 0 4px 0;
+      padding-bottom: 3px;
+      border-bottom: 1px solid #eee;
+      text-transform: uppercase;
+    }
+    .filter-group-heading:first-of-type {
+        margin-top: 0; /* Remove top margin for the first heading */
+    }
+
+    .filter-group-pills {
+        display: flex;
+        flex-wrap: wrap; /* Allow pills to wrap within their group */
+        gap: 6px; /* Space between pills in a group */
+        margin-bottom: 8px; /* Space below a group of pills */
+    }
+     /* Adjust pill style within the main dropdown if needed */
+    .filter-dropdown-content-main .filter-pill {
+       width: auto; /* Allow pills to size naturally */
+       /* Resetting width from previous rule */
+    }
+
+    /* Hover rule removed - dropdown will require JS for click toggle */
+    .filter-pill {
+      background: rgba(66, 133, 244, 0.1);
+      border: 1px solid rgba(66, 133, 244, 0.2);
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      white-space: nowrap;
+      font-weight: 500;
+      backdrop-filter: blur(4px);
+    }
+
+    .filter-pill:hover {
+      background: rgba(66, 133, 244, 0.15);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
+    }
+
+    .filter-pill.active {
+      background: linear-gradient(135deg, #4285f4, #5a9fd8);
+      border-color: #4285f4;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* Comparison Filter Styles */
+    .comparison-filter-pill {
+      background: linear-gradient(135deg, #ff9800, #ff6f00) !important;
+      border-color: #ff9800 !important;
+      color: white !important;
+      font-weight: 600 !important;
+      border-radius: 20px !important;
+      padding: 10px 18px !important;
+      font-size: 13px !important;
+      box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3) !important;
+      border-width: 2px !important;
+      border-style: solid !important;
+    }
+
+    .comparison-filter-pill:hover {
+      background: linear-gradient(135deg, #ff9800, #f57c00) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4) !important;
+    }
+
+    .comparison-filter-pill.active {
+      background: linear-gradient(135deg, #4caf50, #2e7d32) !important;
+      border-color: #4caf50 !important;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4) !important;
+    }
+
+    .comparison-filter-pill.disabled {
+      background: linear-gradient(135deg, #bdbdbd, #9e9e9e) !important;
+      border-color: #bdbdbd !important;
+      color: #fff !important;
+      cursor: not-allowed !important;
+      opacity: 0.6 !important;
+      box-shadow: none !important;
+      transform: none !important;
+    }
+
+    .comparison-filter-pill.disabled:hover {
+      background: linear-gradient(135deg, #bdbdbd, #9e9e9e) !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    /* Comparison info text styles */
+    .comparison-filters-container {
+      border: 1px solid #e8eaed;
+      border-radius: 8px;
+      padding: 8px 12px;
+      background: rgba(248, 249, 250, 0.8);
+      backdrop-filter: blur(4px);
+    }
+
+    .comparison-disabled-text {
+      color: #9aa0a6;
+      font-size: 11px;
+      font-style: italic;
+    }
+
+    .comparison-enabled-text {
+      color: #1a73e8;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+     /* --- Filter Tooltip CSS Removed --- */
+     .filter-tooltip li { margin-bottom: 3px;}
+
+
+    /* --- Table --- */
+    #queryDataContainer {
+        max-height: 380px;
+        overflow-y: auto;
+        overflow-x: auto;
+        position: relative;
+        margin-top: 16px;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        border: none;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-sizing: border-box;
+      vertical-align: middle;
+      line-height: 1.4;
+    }
+
+    /* Column widths - Base values (These will be overridden by user preferences) */
+    th:nth-child(1), td:nth-child(1) { width: 35%; }
+    th:nth-child(2), td:nth-child(2) { width: 12%; text-align: right; } /* Clicks */
+    th:nth-child(3), td:nth-child(3) { width: 15%; text-align: right; } /* Impressions */
+    th:nth-child(4), td:nth-child(4) { width: 12%; text-align: right; } /* CTR */
+    th:nth-child(5), td:nth-child(5) { width: 12%; text-align: right; } /* Position */
+
+    /* Column resizing styles */
+    .resizable-th {
+      position: relative;
+    }
+    
+    .column-resizer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 5px;
+      height: 100%;
+      cursor: col-resize;
+      user-select: none;
+      background-color: transparent;
+    }
+    
+    .column-resizer:hover,
+    .column-resizer.resizing {
+      background-color: #1a73e8;
+    }
+
+    th {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      cursor: pointer;
+      font-weight: 600;
+      letter-spacing: 0.025em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: #5f6368;
+    }
+    th:hover {
+        background: linear-gradient(135deg, #e9ecef, #dee2e6);
+    }
+
+    /* Sort indicators */
+    th .sort-arrow {
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        margin-left: 5px;
+        vertical-align: middle;
+        opacity: 0.4;
+    }
+    th.sort-asc .sort-arrow {
+        border-bottom: 5px solid #333;
+        opacity: 1;
+    }
+    th.sort-desc .sort-arrow {
+        border-top: 5px solid #333;
+        opacity: 1;
+    }
+
+
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background: rgba(66, 133, 244, 0.05);
+      transform: scale(1.001);
+      transition: all 0.2s ease;
+    }
+
+    td a {
+        color: #1a73e8;
+        text-decoration: none;
+    }
+    td a:hover {
+        text-decoration: underline;
+    }
+
+    /* Delta styles */
+    .delta {
+        font-size: 0.85em;
+        margin-left: 4px;
+        display: inline-block;
+        padding: 1px 3px;
+        border-radius: 3px;
+        opacity: 0.8;
+        font-weight: bold;
+    }
+    .delta-pos { color: #167c4d; background-color: #e6f4ea; }
+    .delta-neg { color: #b72d1d; background-color: #fce8e6; }
+    .delta-zero { color: #5f6368; background-color: #f1f3f4; }
+
+    /* Quick Action Icons Styling */
+    .keyword-cell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+    }
+
+    .action-icons {
+        display: flex;
+        margin-left: 10px;
+        opacity: 0.25;
+        transition: opacity 0.2s ease;
+    }
+
+    tr:hover .action-icons {
+        opacity: 1;
+    }
+
+    .action-icon {
+        cursor: pointer;
+        margin-left: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        position: relative;
+    }
+
+    .action-icon:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .action-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .copy-icon svg { fill: #4285F4; } /* Google Blue */
+    .search-icon svg { fill: #DB4437; } /* Google Red */
+    .gsc-icon svg { fill: #34A853; } /* Google Green */
+    .trends-icon svg { fill: #FBBC05; } /* Google Yellow */
+
+    .no-data {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-style: italic;
+    }
+
+    .dashboard-board {
+      margin-bottom: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Analytics Dashboard Tabs */
+    .analytics-tabs {
+      display: flex;
+      border-bottom: 1px solid #dadce0;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .analytics-tab {
+      padding: 8px 16px;
+      background: none;
+      color: #5f6368;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .analytics-tab.active {
+      color: #1a73e8;
+      border-bottom: 3px solid #1a73e8;
+      font-weight: 500;
+    }
+    
+    .analytics-tab:hover:not(.active) {
+      background-color: #f8f9fa;
+      color: #202124;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+      animation: fadeInUp 0.3s ease-out;
+    }
+    
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+    
+    .chart-container {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      padding: 16px;
+      margin-bottom: 16px;
+      height: 180px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+    
+    .chart-container:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    
+    .chart-row {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .chart-col {
+      flex: 1;
+    }
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    
+    .chart-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #202124;
+    }
+    
+    .chart-info {
+      font-size: 11px;
+      color: #5f6368;
+    }
+
+    .data-meta {
+      background-color: #e8f0fe; /* Light blue background like metric cards */
+      padding: 15px; /* Increased padding */
+      border-radius: 8px; /* Match metric cards */
+      margin-bottom: 15px;
+      font-size: 13px; /* Slightly larger base font */
+      line-height: 1.5; /* Slightly more spacing */
+      border-left: 4px solid #4285f4; /* Blue accent border like metric cards */
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06); /* Subtle shadow */
+      display: none; /* Hide initially until populated */
+    }
+    .meta-item {
+        margin-bottom: 6px; /* Space between items */
+    }
+    .meta-item:last-child {
+        margin-bottom: 0;
+    }
+    .meta-label {
+        font-weight: bold;
+        color: #1a73e8; /* Blue label color */
+        display: inline-block; /* Allows setting width */
+        min-width: 110px; /* Align values */
+        margin-right: 5px;
+    }
+    .meta-value {
+        color: #333; /* Darker value text */
+    }
+    /* Special styling for notes */
+     .meta-note {
+        font-size: 11px;
+        color: #5f6368;
+        margin-top: 8px;
+        display: block; /* Put notes on new line */
+     }
+
+    /* --- Searchable Select Dropdown --- */
+    .searchable-select-container {
+      position: relative;
+      width: 100%;
+    }
+    
+    .searchable-select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 16px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+    
+    .searchable-select:focus {
+      outline: none;
+      border-color: #1a73e8;
+      box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+    }
+    
+    .searchable-select option {
+      padding: 8px;
+    }
+    
+    /* Property type indicators */
+    .property-domain::before {
+      content: "🌐 ";
+    }
+    
+    .property-url::before {
+      content: "🔗 ";
+    }
+
+    /* --- Other --- */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-content { 
+        display: none; 
+        position: absolute; 
+        background-color: white; 
+        min-width: 140px; 
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.15); 
+        z-index: 1000; 
+        border-radius: 6px; 
+        border: 1px solid #e0e0e0;
+        overflow: hidden;
+        top: 100%;
+        right: 0;
+        margin-top: 2px;
+    }
+    .dropdown-content.show { display: block; }
+    .dropdown-content button { 
+        width: 100%; 
+        text-align: left; 
+        padding: 10px 14px; 
+        background: white; 
+        color: #333; 
+        margin: 0; 
+        border: none; 
+        font-size: 13px; 
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        display: block;
+    }
+    .dropdown-content button:hover { 
+        background-color: #f8f9fa; 
+        color: #333; 
+    }
+    .dropdown-content button:first-child {
+        border-radius: 6px 6px 0 0;
+    }
+    .dropdown-content button:last-child {
+        border-radius: 0 0 6px 6px;
+    }
+
+    /* Custom Date Container Style */
+    #custom-date-container {
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        padding: 10px 15px; /* Adjusted padding */
+        border-radius: 4px;
+        background-color: #f0f4f8; /* Slightly different background */
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        /* display: none; /* Initially hidden - controlled by JS */
+    }
+     #custom-date-container h4 {
+        width: 100%;
+        margin: 0 0 10px 0;
+        font-size: 14px;
+        color: #333;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+     }
+     #custom-date-container .setting-group {
+        flex-basis: calc(50% - 10px); /* Adjust basis for gap */
+        min-width: 180px; /* Ensure inputs don't get too small */
+     }
+
+  /* --- Information Icon and Tooltip --- */
+  .info-icon {
+    cursor: pointer;
+    color: #1a73e8; /* Google Blue */
+    font-size: 1em;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  .tooltip {
+    visibility: hidden;
+    width: 250px; /* Adjust width as needed */
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 12px;
+    position: absolute;
+    z-index: 20; /* Ensure it's above other elements */
+    /* Position near the icon - adjust as needed */
+    /* Removed bottom and left */
+    bottom: 100%; /* Position above the relative parent */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    margin-bottom: 5px; /* Add space between icon and tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    line-height: 1.4;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    /* Prevent pointer events on the tooltip itself */
+    pointer-events: none;
+  }
+
+  .tooltip::after {
+    content: "";
+    position: absolute;
+    /* Removed top */
+    bottom: -10px; /* Position arrow at the bottom pointing up */
+    left: 50%; /* Keep centered */
+    /* Removed margin-left */
+    transform: translateX(-50%); /* Center arrow */
+    border-width: 5px;
+    border-style: solid;
+    /* Changed border-color to point arrow up */
+    border-color: transparent transparent #555 transparent;
+  }
+
+  .info-icon:hover + .tooltip,
+  .info-icon:focus + .tooltip,
+  .tooltip.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  /* --- Custom Select Dropdown Styles --- */
+  .custom-select-container {
+    position: relative;
+    width: 100%;
+  }
+
+  #sitePropertyInput { /* Styling the input to look like a select */
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+    background-color: #fff; /* Ensure white background */
+    cursor: pointer; /* Indicate it's clickable */
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23666" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  #sitePropertyInput:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+  }
+
+  .custom-select-dropdown {
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: 100%; /* Position below the input */
+    left: 0;
+    /* Removed right: 0 to allow width to be determined by content or min/max width */
+    min-width: 300px; /* Set a minimum width */
+    background-color: #ffffff;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    z-index: 100; /* Ensure above other elements */
+    margin-top: 2px;
+    border: 1px solid #ddd;
+    max-height: 200px; /* Limit height and add scroll */
+    overflow-y: auto;
+  }
+
+  .custom-select-dropdown input[type="text"] { /* Style for the search input */
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 8px 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+
+  .custom-select-option {
+    padding: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .custom-select-option:hover {
+    background-color: #f1f1f1;
+  }
+
+  .custom-select-option.highlighted {
+    background-color: #ddd; /* Style for keyboard navigation highlight */
+  }
+
+  .custom-select-option.selected {
+    background-color: #e8f0fe; /* Light blue background */
+    color: #1a73e8; /* Google Blue text */
+    font-weight: 500;
+  }
+
+  /* Property type indicators for custom options */
+  .custom-select-option.property-domain::before {
+    content: "🌐 ";
+  }
+
+  .custom-select-option.property-url::before {
+    content: "🔗 ";
+  }
+
+  /* Enhanced Table Styles */
+  #queryData table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e8eaed;
+  }
+
+  #queryData th {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e8f0fe 100%);
+      color: #202124;
+      font-weight: 600;
+      text-align: left;
+      padding: 16px 12px;
+      border-bottom: 2px solid #e8eaed;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+  }
+
+  #queryData th:first-child {
+      border-top-left-radius: 8px;
+  }
+
+  #queryData th:last-child {
+      border-top-right-radius: 8px;
+  }
+
+  #queryData td {
+      padding: 12px;
+      border-bottom: 1px solid #f1f3f4;
+      font-size: 13px;
+      vertical-align: middle;
+      transition: background-color 0.2s ease;
+  }
+
+  #queryData tr:hover td {
+      background-color: #f8f9fa;
+  }
+
+  #queryData tr:last-child td {
+      border-bottom: none;
+  }
+
+  #queryData tr:last-child td:first-child {
+      border-bottom-left-radius: 8px;
+  }
+
+  #queryData tr:last-child td:last-child {
+      border-bottom-right-radius: 8px;
+  }
+
+  /* Improved keyword cell styling */
+  .keyword-cell {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+  }
+
+  .keyword-cell a {
+      color: #1a73e8;
+      text-decoration: none;
+      font-weight: 500;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+
+  .keyword-cell a:hover {
+      text-decoration: underline;
+      color: #1557b0;
+  }
+
+  .action-icons {
+      display: flex;
+      gap: 4px;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+  }
+
+  .keyword-cell:hover .action-icons {
+      opacity: 1;
+  }
+
+  .action-icon {
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .action-icon:hover {
+      background-color: rgba(66, 133, 244, 0.1);
+      transform: scale(1.1);
+  }
+
+  /* Badge improvements */
+  .new-badge, .lost-badge {
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 6px;
+      border-radius: 12px;
+      margin-left: 6px;
+      letter-spacing: 0.5px;
+  }
+
+  .new-badge {
+      background: linear-gradient(135deg, #34a853, #2e7d32);
+      color: white;
+  }
+
+  .lost-badge {
+      background: linear-gradient(135deg, #ea4335, #d32f2f);
+      color: white;
+  }
+
+  /* Numeric cell improvements */
+  #queryData td:not(:first-child) {
+      text-align: right;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+  }
+
+  /* Delta indicators */
+  .delta-positive {
+      color: #34a853;
+      font-weight: 600;
+  }
+
+  .delta-negative {
+      color: #ea4335;
+      font-weight: 600;
+  }
+
+  .delta-neutral {
+      color: #5f6368;
+  }
+
+    /* ... existing styles ... */
+    
+    .comparison-period-display {
+        font-size: 12px;
+        color: #666;
+        margin-top: 8px;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 4px;
+        border: 1px solid #e8eaed;
+        transition: all 0.2s ease;
+    }
+    
+    .comparison-period-display:hover {
+        background: #f1f3f4;
+        border-color: #dadce0;
+    }
+    
+    #comparisonOptions {
+        margin-top: 12px;
+        padding: 12px;
+        background: #fff;
+        border-radius: 8px;
+        border: 1px solid #e8eaed;
+    }
+    
+    .comparison-options label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        color: #444;
+    }
+    
+    .comparison-options input[type="radio"] {
+        margin-right: 6px;
+    }
+
+    /* Keyword Grouping Styles */
+    .keyword-group {
+        margin-bottom: 8px;
+        border: 1px solid #e8eaed;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .keyword-group-header {
+        padding: 12px 16px;
+        background: linear-gradient(135deg, #f8f9fa, #e8f0fe);
+        border-bottom: 1px solid #e8eaed;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.2s ease;
+        position: relative;
+    }
+
+    .keyword-group-header:hover {
+        background: linear-gradient(135deg, #e8f0fe, #e3f2fd);
+    }
+
+    .keyword-group-header.expanded {
+        border-bottom-color: transparent;
+    }
+
+    .group-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .group-toggle-icon {
+        font-size: 12px;
+        color: #5f6368;
+        transition: transform 0.2s ease;
+        width: 16px;
+        text-align: center;
+    }
+
+    .group-toggle-icon.expanded {
+        transform: rotate(90deg);
+    }
+
+    .group-topic {
+        font-weight: 600;
+        color: #1a73e8;
+        font-size: 14px;
+        margin-right: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .group-intent-badge {
+        background: #e8f0fe;
+        color: #1a73e8;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .group-intent-badge.commercial { background: #fef7e0; color: #f9ab00; }
+    .group-intent-badge.navigational { background: #e8f5e8; color: #34a853; }
+    .group-intent-badge.transactional { background: #fce8e6; color: #ea4335; }
+
+    .group-header-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+    }
+
+    .group-metrics {
+        display: flex;
+        gap: 16px;
+        font-size: 12px;
+        color: #5f6368;
+    }
+
+    .group-metric {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 40px;
+    }
+
+    .group-metric-value {
+        font-weight: 600;
+        color: #202124;
+        font-size: 13px;
+        line-height: 1;
+    }
+
+    .group-metric-label {
+        color: #5f6368;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 1px;
+    }
+
+    .group-size-badge {
+        background: #f1f3f4;
+        color: #5f6368;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .keyword-group-content {
+        display: none;
+        animation: slideDown 0.3s ease-out;
+    }
+
+    .keyword-group-content.expanded {
+        display: block;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .group-keywords-table {
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        border: none;
+    }
+
+    .group-keywords-table th {
+        background: #f8f9fa;
+        font-size: 11px;
+        padding: 8px 12px;
+        border-bottom: 1px solid #e8eaed;
+    }
+
+    .group-keywords-table td {
+        padding: 8px 12px;
+        border-bottom: 1px solid #f1f3f4;
+        font-size: 12px;
+    }
+
+    .group-keywords-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .ungrouped-section {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 2px solid #e8eaed;
+    }
+
+    .ungrouped-header {
+        font-size: 14px;
+        font-weight: 600;
+        color: #5f6368;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .grouping-view-toggle {
+        display: flex;
+        border: 1px solid #dadce0;
+        border-radius: 6px;
+        overflow: hidden;
+        background: white;
+        margin-bottom: 12px;
+    }
+
+    .grouping-view-toggle button {
+        border: none;
+        padding: 6px 12px;
+        background: white;
+        color: #5f6368;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border-radius: 0;
+    }
+
+    .grouping-view-toggle button.active {
+        background: #e8f0fe;
+        color: #1a73e8;
+        font-weight: 500;
+    }
+
+    .grouping-view-toggle button:hover:not(.active) {
+        background: #f8f9fa;
+    }
+
+    /* Group-based filtering pills */
+    .group-filter-pills {
+        display: flex;
+        gap: 6px;
+        margin: 8px 0;
+        flex-wrap: wrap;
+    }
+
+    .group-filter-pill {
+        background: rgba(156, 39, 176, 0.1);
+        border: 1px solid rgba(156, 39, 176, 0.2);
+        border-radius: 16px;
+        padding: 4px 12px;
+        font-size: 11px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        color: #7b1fa2;
+        font-weight: 500;
+    }
+
+    .group-filter-pill:hover {
+        background: rgba(156, 39, 176, 0.15);
+        transform: translateY(-1px);
+    }
+
+    .group-filter-pill.active {
+        background: #9c27b0;
+        color: white;
+        border-color: #9c27b0;
+    }
+
+    /* Data Actions & Summary Accordion Styles */
+    .data-actions-summary-container {
+        margin-bottom: 15px;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+    }
+
+    .data-summary-section {
+        background-color: #fff;
+        border-radius: 8px 8px 0 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .data-summary-toggle {
+        width: 100%;
+        padding: 12px 15px;
+        background: none;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 13px;
+        color: #495057;
+        transition: background-color 0.2s ease;
+    }
+
+    .data-summary-toggle:hover {
+        background-color: #f8f9fa;
+    }
+
+    .data-summary-content {
+        font-weight: 500;
+        color: #333;
+    }
+
+    .data-summary-arrow {
+        font-size: 12px;
+        color: #6c757d;
+        transition: transform 0.2s ease;
+    }
+
+    .data-summary-arrow.expanded {
+        transform: rotate(180deg);
+    }
+
+    .data-details-section {
+        padding: 15px;
+        background-color: #fff;
+        border-top: 1px solid #f1f3f4;
+        display: none;
+        border-radius: 0 0 8px 8px;
+    }
+
+    .data-details-section.expanded {
+        display: block;
+    }
+
+    .data-details-content .meta-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 6px 0;
+        border-bottom: 1px solid #f8f9fa;
+        font-size: 12px;
+    }
+
+    .data-details-content .meta-item:last-child {
+        border-bottom: none;
+    }
+
+    .data-details-content .meta-label {
+        font-weight: 500;
+        color: #495057;
+        min-width: 120px;
+        flex-shrink: 0;
+    }
+
+    .data-details-content .meta-value {
+        color: #333;
+        text-align: right;
+        flex: 1;
+        margin-left: 10px;
+    }
+
+    .data-details-content .meta-note {
+        display: block;
+        font-style: italic;
+        color: #6c757d;
+        font-size: 11px;
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid #f1f3f4;
+    }
+
+    .data-actions-section {
+        padding: 12px 15px;
+        background-color: #f8f9fa;
+        border-radius: 0 0 8px 8px;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .data-actions-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .data-actions-buttons button {
+        font-size: 12px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+        background-color: #fff;
+        color: #495057;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .data-actions-buttons button:hover {
+        background-color: #e9ecef;
+        border-color: #adb5bd;
+    }
+
+    .data-actions-buttons button:active {
+        transform: translateY(1px);
+    }
+
+    /* Override dropdown positioning for data actions */
+    .data-actions-buttons .dropdown-content {
+        right: 0;
+        left: auto;
+        top: 100%;
+        margin-top: 2px;
+    }
+
+    /* Ensure dropdown button inherits data actions button styles */
+    .data-actions-buttons .dropdown-btn {
+        font-size: 12px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+        background-color: #fff;
+        color: #495057;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .data-actions-buttons .dropdown-btn:hover {
+        background-color: #e9ecef;
+        border-color: #adb5bd;
+    }
+  </style>
+</head>
+<body>
+  <!-- Enhanced gradient header -->
+  <div style="background: linear-gradient(135deg, #4285f4, #34a853); color: white; padding: 20px 15px; margin: -15px -15px 15px -15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; width: calc(100% + 30px);">
+    <div>
+      <div style="font-size: 24px; font-weight: bold; margin-bottom: 8px;">Google Search Console Keyword Data</div>
+      <div style="opacity: 0.9; font-size: 14px; font-weight: normal; display: inline-flex; align-items: center; gap: 6px;">Advanced insights using Google Search Console API data
+        <a id="linkedinLink" href="https://www.linkedin.com/in/ramin-babaei-hemmati/" target="_blank" rel="noopener noreferrer" title="LinkedIn" style="display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; text-decoration: none;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.447-2.136 2.944v5.662H9.352V9h3.414v1.561h.049c.476-.9 1.637-1.852 3.368-1.852 3.602 0 4.268 2.371 4.268 5.455v6.288zM5.337 7.433a2.063 2.063 0 1 1 0-4.126 2.063 2.063 0 0 1 0 4.126zM7.114 20.452H3.558V9h3.556v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.226.792 24 1.771 24h20.451C23.2 24 24 23.226 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <!-- Add the new fullscreen button here -->
+      <button id="openFullScreenBtn" title="Open in a new full screen tab" style="padding: 8px 16px; font-size: 12px; background-image: linear-gradient(135deg, #5bc0de, #31708f); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; color: white; transition: all 0.2s ease; margin-right: auto;">Open Full Screen</button>
+      
+      <div class="auth-status" id="authStatus" style="color: rgba(255,255,255,0.8); font-size: 14px; font-weight: normal; margin-right: 10px;">Not Signed In</div>
+      <button id="authSignIn" style="padding: 8px 16px; font-size: 12px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); border-radius: 4px; color: white; transition: all 0.2s ease;">Sign In</button>
+      <button id="authSignOut" style="display: none; padding: 8px 16px; font-size: 12px; background: rgba(234,67,53,0.8); border: 1px solid rgba(234,67,53,0.9); border-radius: 4px; color: white; transition: all 0.2s ease;">Sign Out</button>
+    </div>
+  </div>
+  
+  <!-- Settings Container -->
+  <div class="settings-container">
+    <!-- Site Properties Custom Dropdown -->
+    <div class="setting-group">
+      <label for="sitePropertyInput" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <span style="display: flex; align-items: center; gap: 4px;">
+          Site Property: 
+          <span class="info-icon" id="sitePropertyInfo" tabindex="0" title="Property selection is optional. The extension will automatically use the most appropriate property for the current page.">ℹ️</span>
+        </span>
+        <span style="font-weight: normal; font-style: italic; color: #666; font-size: 11px;">(Optional)</span>
+      </label>
+      <div class="custom-select-container" id="sitePropertyCustomSelect">
+        <input type="text" id="sitePropertyInput" placeholder="Select or search property..." readonly style="width: 100%;">
+        <div class="custom-select-dropdown" id="sitePropertyDropdown">
+          <!-- Options will be populated here by JavaScript -->
+          <div class="custom-select-option" data-value="">Loading properties...</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Date Range Settings -->
+    <div class="setting-group">
+        <label for="dateRange">Date Range:</label>
+        <div style="position: relative; width: 100%;">
+            <select id="dateRange">
+                <option value="last7days" selected>Last 7 days</option>
+                <option value="last28days">Last 28 days</option>
+                <option value="last3months">Last 3 months</option>
+                <option value="last6months">Last 6 months</option>
+                <option value="last8months">Last 8 months</option>
+                <option value="lastYear">Last 12 months</option>
+                <option value="custom">Custom</option>
+            </select>
+            <div id="custom-date-container" style="display: none; position: absolute; left: 0; top: 110%; z-index: 100; background: #e3f0ff; border: 1.5px solid #90caf9; border-radius: 8px; box-shadow: 0 4px 16px rgba(66,133,244,0.15); padding: 18px 20px; min-width: 220px; max-width: 320px; margin: 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h4 style="margin: 0; font-size: 14px; font-weight: 600; color: #1976d2;">Custom Date Range</h4>
+                </div>
+                <label for="period2StartDate" style="font-size: 14px; font-weight: 600; color: #1976d2; display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                    <span>Start Date</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;"><rect x="3" y="5" width="18" height="16" rx="3" fill="#90caf9"/><rect x="7" y="2" width="2" height="4" rx="1" fill="#1976d2"/><rect x="15" y="2" width="2" height="4" rx="1" fill="#1976d2"/><rect x="3" y="9" width="18" height="2" fill="#1976d2"/></svg>
+                </label>
+                <input type="date" id="period2StartDate" style="width: 100%; padding: 10px 14px; border: 2px solid #90caf9; border-radius: 6px; font-size: 15px; background: #fff; color: #1976d2; font-weight: 500; margin-bottom: 12px; text-align: center;">
+                
+                <label for="period2EndDate" style="font-size: 14px; font-weight: 600; color: #1976d2; display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+                    <span>End Date</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;"><rect x="3" y="5" width="18" height="16" rx="3" fill="#90caf9"/><rect x="7" y="2" width="2" height="4" rx="1" fill="#1976d2"/><rect x="15" y="2" width="2" height="4" rx="1" fill="#1976d2"/><rect x="3" y="9" width="18" height="2" fill="#1976d2"/></svg>
+                </label>
+                <input type="date" id="period2EndDate" style="width: 100%; padding: 10px 14px; border: 2px solid #90caf9; border-radius: 6px; font-size: 15px; background: #fff; color: #1976d2; font-weight: 500; margin-bottom: 12px; text-align: center;">
+                
+                <div class="date-range-info" style="font-size: 12px; color: #1976d2; margin-top: 2px; text-align: center; margin-bottom: 15px;">
+                    Select any date range within the last 16 months. End date cannot be in the future.
+                </div>
+
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button id="cancelCustomDate" style="padding: 8px 16px; border: 1px solid #90caf9; border-radius: 4px; background: white; color: #1976d2; font-weight: 500; cursor: pointer; transition: all 0.2s ease;">Cancel</button>
+                    <button id="applyCustomDate" style="padding: 8px 16px; border: none; border-radius: 4px; background: #1976d2; color: white; font-weight: 500; cursor: pointer; transition: all 0.2s ease;">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyword Limit -->
+    <div class="setting-group" style="flex: 0 0 150px; min-width: 120px;">
+        <label for="keywordLimit">Keyword Limit:</label>
+        <input type="number" id="keywordLimit" value="1000" min="10" max="25000" step="100">
+    </div>
+  </div>
+
+  <!-- Data Fetching Options Collapsible Section (Content Only - will be moved) -->
+  <div class="collapsible-section" style="display: none;"> <!-- Hide original section -->
+    <!-- Button moved to action container -->
+    <div id="fetch-options-content-original-location" class="collapsible-content"> <!-- Keep content temporarily -->
+      <!-- Comparison Options -->
+      <div class="setting-group" style="margin-bottom: 15px;">
+        <div class="comparison-group">
+          <label for="compareData" style="display: flex; align-items: center; margin-bottom: 10px;">
+            <input type="checkbox" id="compareData" style="margin-right: 8px;"> Enable Data Comparison
+          </label>
+          
+          <!-- This div should be shown/hidden based on #compareData checkbox state via JS -->
+          <div id="comparisonOptions" style="display: none; margin-left: 20px;">
+            <div class="comparison-options">
+              <label>
+                <input type="radio" id="comparePreviousPeriod" name="comparisonType" value="previous" checked>
+                Compare Against: Previous Period
+              </label>
+              <label>
+                <input type="radio" id="compareLastYear" name="comparisonType" value="lastYear">
+                Compare Against: Same Period Last Year
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Device and Search Type selectors -->
+      <div class="advanced-options-container" style="display: flex; gap: 15px; margin-bottom: 15px;">
+        <div class="setting-group">
+          <label for="deviceFilter">Device:</label>
+          <select id="deviceFilter">
+            <option value="all" selected>All Devices</option>
+            <option value="desktop">Desktop</option>
+            <option value="mobile">Mobile</option>
+            <option value="tablet">Tablet</option>
+          </select>
+        </div>
+        
+        <div class="setting-group">
+          <label for="searchTypeFilter">Search Type:</label>
+          <select id="searchTypeFilter">
+            <option value="all" selected>All Search Types</option>
+            <option value="web">Web Search</option>
+            <option value="image">Image Search</option>
+            <option value="video">Video Search</option>
+            <option value="news">News Search</option>
+            <option value="discover">Discover</option>
+            <option value="googleNews">Google News</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom URL Field -->
+  <div style="margin-bottom: 15px; margin-top: 10px;">
+    <label for="customUrlInput" style="display: block; font-size: 13px; color: #444; font-weight: 500; margin-bottom: 5px;">
+      Custom URL: <span style="font-weight: normal; font-style: italic; color: #666;">(Optional)</span>
+      <span class="info-icon" id="customUrlInfo" tabindex="0" title="Enter a specific URL here if you want to analyze data for a page different from the current page.">ℹ️</span>
+    </label>
+    <div style="display: flex; background-color: #e8f0fe; border-radius: 4px; padding: 8px; border-left: 3px solid #4285f4;">
+      <input type="text" id="customUrlInput" placeholder="Enter URL for analysis..." style="flex: 1; padding: 8px; border: 1px solid #c6d8f7; border-radius: 4px; margin-right: 8px;">
+      <button id="useCustomUrl" style="background-image: linear-gradient(to right bottom, #6ba8fd, #4285f4); color: white; border: none; border-radius: 4px; padding: 8px 12px; cursor: pointer; white-space: nowrap;">Use URL</button>
+    </div>
+    <div id="customUrlHelp" style="display: none; margin-top: 8px; padding: 8px 12px; background-color: #f8f9fa; border-radius: 4px; color: #666; font-size: 12px; border-left: 3px solid #e8eaed;"></div>
+  </div>
+
+  <!-- Action buttons row -->
+  <div class="action-container" style="display: flex; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 8px; padding: 16px; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(10px); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); max-width: 100%; box-sizing: border-box; position: relative; z-index: 20;">
+    <!-- Split Button Container -->
+    <div class="split-button-container" style="display: inline-flex; position: relative; vertical-align: middle;">
+      <button id="fetchApiData" disabled style="border-top-right-radius: 0; border-bottom-right-radius: 0; margin-right: 0;">Fetch GSC Data</button>
+      <button id="fetch-options-toggle" class="split-button-trigger" style="border-top-left-radius: 0; border-bottom-left-radius: 0; border-left: 1px solid rgba(255, 255, 255, 0.3); margin-left: 0; line-height: 1;">▼</button>
+      <!-- Dropdown Content (Moved Here) -->
+      <div id="fetch-options-content" class="split-button-dropdown-content">
+         <!-- Content will be populated by JS or copied if needed, but structure is here -->
+         <!-- Placeholder: Comparison Options -->
+         <div class="setting-group" style="margin-bottom: 15px;">
+           <div class="comparison-group">
+             <label for="compareData" style="display: flex; align-items: center; margin-bottom: 10px;">
+               <input type="checkbox" id="compareData" style="margin-right: 8px;"> Enable Data Comparison
+             </label>
+             <div id="comparisonOptions" style="display: none; margin-left: 20px;">
+               <div class="comparison-options">
+                 <label><input type="radio" id="comparePreviousPeriod" name="comparisonType" value="previous" checked> Previous Period</label>
+                 <label><input type="radio" id="compareLastYear" name="comparisonType" value="lastYear"> Same Period Last Year</label>
+               </div>
+             </div>
+           </div>
+         </div>
+         <!-- Placeholder: Device/Search Type with UNIQUE IDs -->
+         <div class="advanced-options-container" style="display: flex; gap: 15px; margin-bottom: 15px;">
+           <div class="setting-group">
+             <label for="deviceFilter_dropdown">Device:</label> <!-- Unique label 'for' -->
+             <select id="deviceFilter_dropdown"> <!-- Unique ID -->
+               <option value="all" selected>All Devices</option> <option value="desktop">Desktop</option> <option value="mobile">Mobile</option> <option value="tablet">Tablet</option>
+             </select>
+           </div>
+           <div class="setting-group">
+             <label for="searchTypeFilter_dropdown">Search Type:</label> <!-- Unique label 'for' -->
+             <select id="searchTypeFilter_dropdown"> <!-- Unique ID -->
+               <option value="all" selected>All Search Types</option> <option value="web">Web Search</option> <option value="image">Image Search</option> <option value="video">Video Search</option> <option value="news">News Search</option> <option value="discover">Discover</option> <option value="googleNews">Google News</option>
+             </select>
+           </div>
+         </div>
+      </div>
+    </div>
+    <!-- End Split Button -->
+    
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <button id="clearData">🗑️ Clear</button>
+    </div>
+    
+    <div style="margin-left: auto; display: flex; align-items: center; gap: 12px;">
+      <div id="status" style="font-size: 12px; color: #666; white-space: nowrap;">Ready</div>
+    </div>
+  </div>
+
+  <!-- Performance Dashboard Board -->
+  <div class="dashboard-board">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+      <h3 style="margin: 0; color: #1a73e8; font-size: 16px; display: flex; align-items: center;">
+        <span style="margin-right: 8px;">📊</span> Performance Dashboard
+      </h3>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 13px; color: #5f6368;">Metrics view:</span>
+        <div style="display: flex; border: 1px solid #dadce0; border-radius: 4px; overflow: hidden;">
+          <button class="toggle-button active" data-view="page" style="border: none; padding: 4px 12px; background: #e8f0fe; color: #1a73e8; font-size: 13px; cursor: pointer;">Page level</button>
+          <button class="toggle-button" data-view="keyword" style="border: none; padding: 4px 12px; background: #fff; color: #5f6368; font-size: 13px; cursor: pointer;">Keyword level</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Metrics Summary Cards - All in one row -->
+    <div id="metricsSummary" style="display: flex; flex-wrap: nowrap; width: 100%; gap: 15px;">
+      <div class="metric-card" style="flex: 1;">
+        <div class="metric-value" id="totalClicks">0</div>
+        <div class="metric-label">Total Clicks</div>
+      </div>
+      <div class="metric-card" style="flex: 1;">
+        <div class="metric-value" id="totalImpressions">0</div>
+        <div class="metric-label">Total Impressions</div>
+      </div>
+      <div class="metric-card" style="flex: 1;">
+        <div class="metric-value" id="avgCTR">0%</div>
+        <div class="metric-label">Average CTR</div>
+      </div>
+      <div class="metric-card" style="flex: 1;">
+        <div class="metric-value" id="avgPosition">0</div>
+        <div class="metric-label">Average Position</div>
+      </div>
+    </div>
+    
+    <!-- Analytics Dashboard Tabs -->
+    <div class="analytics-tabs">
+      <button class="analytics-tab active" data-tab="position-insights">Position Insights</button>
+      <button class="analytics-tab" data-tab="keyword-analysis">Keyword Analysis</button>
+    </div>
+    
+    <!-- Tab Content - Position Insights -->
+    <div id="position-insights" class="tab-content active">
+      <div class="chart-row">
+        <div class="chart-col">
+          <!-- CTR by Position Chart -->
+          <div class="chart-container">
+            <div class="chart-header">
+              <div class="chart-title">CTR by Position</div>
+              <div class="chart-info">Values rounded to nearest whole number</div>
+            </div>
+            <canvas id="ctrPositionChart"></canvas>
+          </div>
+        </div>
+        <div class="chart-col">
+          <!-- Keyword Distribution by Position Chart -->
+          <div class="chart-container">
+            <div class="chart-header">
+              <div class="chart-title">Keyword Distribution by Position</div>
+              <div class="chart-info">Number of keywords in each position range</div>
+            </div>
+            <canvas id="keywordDistributionChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab Content - Keyword Analysis -->
+    <div id="keyword-analysis" class="tab-content">
+      <!-- Clicks vs Impressions Scatter Plot - Top 100 Keywords -->
+      <div class="chart-container" style="height: 220px;">
+        <div class="chart-header">
+          <div class="chart-title">Clicks vs Impressions (Top 100 Keywords)</div>
+          <div class="chart-info">Shows top 100 keywords sorted by clicks</div>
+        </div>
+        <canvas id="clicksVsImpressionsChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter Container -->
+  <div class="search-filter-container">
+    <input type="text" id="searchKeywords" placeholder="Search keywords...">
+    
+    <div class="filter-dropdown-container"> <!-- Keep container for potential alignment -->
+      <!-- Single Main Filter Dropdown -->
+      <div class="filter-dropdown">
+        <button class="filter-dropdown-btn">Filters ▼</button>
+        <div class="filter-dropdown-content filter-dropdown-content-main two-column-dropdown">
+          
+          <!-- Left Column: Filters -->
+          <div class="filter-pills-column">
+            <h4 class="filter-group-heading">Position</h4>
+            <div class="filter-group-pills">
+              <div class="filter-pill active" data-filter="all">All</div>
+              <div class="filter-pill" data-filter="position-1-3">Position 1-3</div>
+              <div class="filter-pill" data-filter="position-5-20">Position 5-20</div>
+              <div class="filter-pill" data-filter="position-gt-20">Position > 20</div>
+            </div>
+
+            <h4 class="filter-group-heading">Performance</h4>
+            <div class="filter-group-pills">
+              <div class="filter-pill" data-filter="low-ctr">Low CTR Opportunity</div>
+              <div class="filter-pill" data-filter="high-impressions">High Impressions (>=100)</div>
+              <div class="filter-pill" data-filter="has-clicks">Has Clicks</div>
+              <div class="filter-pill" data-filter="no-clicks">No Clicks</div>
+            </div>
+
+            <h4 class="filter-group-heading">Query Type</h4>
+            <div class="filter-group-pills">
+              <div class="filter-pill" data-filter="questions">Questions</div>
+            </div>
+
+            <h4 class="filter-group-heading">Smart Groups</h4>
+            <div class="filter-group-pills" id="group-intent-filters" style="display: none;">
+              <div class="group-filter-pill" data-intent="all">All Intents</div>
+              <div class="group-filter-pill" data-intent="informational">Informational</div>
+              <div class="group-filter-pill" data-intent="commercial">Commercial</div>
+              <div class="group-filter-pill" data-intent="navigational">Navigational</div>
+              <div class="group-filter-pill" data-intent="transactional">Transactional</div>
+            </div>
+          </div>
+
+          <!-- Right Column: Explanations -->
+          <div class="explanations-column">
+             <h4 class="filter-group-heading">Explanations</h4>
+             <div class="explanations-content-static"> <!-- Renamed class -->
+                <ul>
+                    <li><strong>All:</strong> Show all keywords.</li>
+                    <li><strong>Position 1-3:</strong> Keywords ranking in top 3 positions.</li>
+                    <li><strong>Position 5-20:</strong> Keywords ranking on first 2 pages.</li>
+                    <li><strong>Position > 20:</strong> Keywords beyond page 2.</li>
+                    <li><strong>Low CTR Opp:</strong> CTR < 1% & Impressions >= 10.</li>
+                    <li><strong>High Imp:</strong> Impressions >= 100.</li>
+                    <li><strong>Has Clicks:</strong> Keywords with 1+ clicks.</li>
+                    <li><strong>No Clicks:</strong> Keywords with 0 clicks.</li>
+                    <li><strong>Questions:</strong> Contains question words (how, what, etc.).</li>
+                    <li><strong>Smart Groups:</strong> Available when grouping is active.</li>
+                    <li><strong>Informational:</strong> How-to, guides, tutorials.</li>
+                    <li><strong>Commercial:</strong> Reviews, comparisons, buying intent.</li>
+                    <li><strong>Navigational:</strong> Brand searches, specific sites.</li>
+                    <li><strong>Transactional:</strong> Downloads, signups, purchases.</li>
+                </ul>
+             </div>
+          </div>
+
+        </div>
+      </div>
+      
+      
+    </div>
+    
+    <!-- Advanced Analysis Button -->
+    <button class="collapsible-toggle" id="analysis-options-toggle">Advanced Analysis ▼</button>
+    
+    <!-- Keyword Grouping Controls -->
+    <div class="grouping-controls-container">
+      <button id="keyword-grouping-toggle" class="filter-dropdown-btn" style="background-image: linear-gradient(to right bottom, #9c27b0, #7b1fa2); font-size: 13px; padding: 8px 12px;">
+        🔗 Smart Groups ▼
+      </button>
+      <div id="keyword-grouping-dropdown" class="filter-dropdown-content" style="display: none; min-width: 320px; padding: 15px; right: 0; left: auto;">
+            <div style="margin-bottom: 12px;">
+              <h4 style="margin: 0 0 8px 0; font-size: 13px; color: #333;">Grouping Options</h4>
+              <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
+                <label style="font-size: 12px; color: #666;">Similarity:</label>
+                <input type="range" id="similarity-threshold" min="0.2" max="0.8" step="0.1" value="0.5" style="flex: 1;">
+                <span id="similarity-value" style="font-size: 11px; color: #666; min-width: 30px;">0.5</span>
+              </div>
+              <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 8px;">
+                <label style="font-size: 12px; color: #666;">Min Group Size:</label>
+                <input type="number" id="min-group-size" min="2" max="10" value="2" style="width: 50px; padding: 4px; font-size: 12px;">
+              </div>
+              <div style="margin-bottom: 10px;">
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button id="apply-grouping" style="flex: 1; padding: 6px 12px; font-size: 12px; background: #9c27b0; color: white; border: none; border-radius: 4px; cursor: pointer;">Apply Grouping</button>
+                <button id="clear-grouping" style="padding: 6px 12px; font-size: 12px; background: #f5f5f5; color: #666; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">Clear</button>
+              </div>
+            </div>
+            <div id="grouping-stats" style="font-size: 11px; color: #666; border-top: 1px solid #eee; padding-top: 8px; display: none;">
+              <!-- Grouping statistics will be displayed here -->
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Comparison Filters Container -->
+    <div class="comparison-filters-container" style="display: flex; align-items: center; gap: 8px;">
+      <div class="comparison-filters-wrapper" style="position: relative;">
+        <div class="comparison-info-text" style="font-size: 11px; color: #999; font-style: italic; margin-right: 8px; display: inline-block;">
+          <span class="comparison-disabled-text">Load comparison data to use →</span>
+          <span class="comparison-enabled-text" style="display: none; color: #1a73e8; font-weight: 500;">Comparison filters:</span>
+        </div>
+        <div class="comparison-filter-pills" style="display: inline-flex; gap: 6px;">
+          <div class="filter-pill comparison-filter-pill disabled" data-filter="new-keywords" title="Shows keywords that appear in current period but not in comparison period">
+            <span style="font-weight: bold;">New Keywords</span>
+          </div>
+          <div class="filter-pill comparison-filter-pill disabled" data-filter="lost-keywords" title="Shows keywords that appeared in comparison period but not in current period">
+            <span style="font-weight: bold;">Lost Keywords</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter Tooltip Removed -->
+
+  <!-- Data Analysis Options Collapsible Section (Content Only) -->
+  <div class="collapsible-section">
+    <!-- Button moved above -->
+    <div id="analysis-options-content" class="collapsible-content">
+      <!-- Advanced Filtering -->
+      <div id="advanced-filter-container" style="margin-bottom: 15px; border: 1px solid #ddd; padding: 10px; border-radius: 4px; background-color: #f9f9f9;">
+        <h4 style="margin-top: 0; margin-bottom: 10px; font-size: 14px; color: #333;">Advanced Filters & Sorting</h4>
+        
+        <!-- Filter Rules Builder -->
+        <div id="filter-rules-list" style="margin-bottom: 10px;">
+          <!-- Filter rules will be added here dynamically by JS -->
+          <div class="filter-rule" style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
+            <select class="filter-metric" style="padding: 4px; font-size: 12px;">
+              <option value="clicks">Clicks</option>
+              <option value="impressions">Impressions</option>
+              <option value="ctr">CTR (%)</option>
+              <option value="position">Position</option>
+              <option value="query">Query Text</option>
+            </select>
+            <select class="filter-operator" style="padding: 4px; font-size: 12px;">
+              <option value="gt">></option>
+              <option value="lt"><</option>
+              <option value="gte">>=</option>
+              <option value="lte"><=</option>
+              <option value="eq">=</option>
+              <option value="between">Between</option>
+              <option value="contains">Contains</option>
+            </select>
+            <input type="number" class="filter-value" placeholder="Value" style="padding: 4px; font-size: 12px; width: 60px;">
+            <input type="number" class="filter-value-end" placeholder="Value 2" style="padding: 4px; font-size: 12px; width: 60px; display: none;"> <!-- For 'Between' -->
+            <button class="remove-filter-rule" style="padding: 3px 6px; font-size: 10px; background-color: #eee; color: #333; border: 1px solid #ccc;">X</button>
+          </div>
+        </div>
+        
+        <button id="add-filter-rule" style="padding: 4px 8px; font-size: 12px;">+ Add Condition</button>
+        
+        <div style="margin-top: 8px;">
+          <input type="radio" id="filter-logic-and" name="filter-logic" value="AND" checked> <label for="filter-logic-and" style="font-size: 12px;">AND</label>
+          <input type="radio" id="filter-logic-or" name="filter-logic" value="OR"> <label for="filter-logic-or" style="font-size: 12px;">OR</label>
+        </div>
+        
+        <!-- Query Regex Filter -->
+        <div style="margin-top: 10px;">
+          <label for="query-regex-filter" style="font-size: 12px; display: block; margin-bottom: 3px;">Filter Query (Regex):</label>
+          <input type="text" id="query-regex-filter" placeholder="Enter Regex pattern..." style="width: 100%; padding: 6px; font-size: 12px; box-sizing: border-box;">
+        </div>
+      </div>
+      
+      <!-- Saved Views Section -->
+      <div style="border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px;">
+        <label style="font-size: 12px; display: block; margin-bottom: 3px;">Saved Views:</label>
+        <div style="display: flex; gap: 5px; align-items: center;">
+            <select id="saved-views-dropdown" style="flex-grow: 1; padding: 6px; font-size: 12px;">
+                <option value="">Load a view...</option>
+                <!-- Saved views loaded here by JS -->
+            </select>
+            <button id="load-view-btn" style="padding: 4px 8px; font-size: 12px;" disabled>Load</button>
+            <button id="delete-view-btn" style="padding: 4px 8px; font-size: 12px; background-color: #f1f1f1; color: #333;" disabled>Delete</button>
+        </div>
+        <div style="display: flex; gap: 5px; align-items: center; margin-top: 5px;">
+            <input type="text" id="save-view-name" placeholder="Save current view as..." style="flex-grow: 1; padding: 6px; font-size: 12px;">
+            <button id="save-view-btn" style="padding: 4px 8px; font-size: 12px;">Save</button>
+        </div>
+      </div>
+      
+      <!-- Multi-Sort Info -->
+      <div id="multi-sort-info" style="font-size: 11px; color: #666; margin-top: 8px;">
+        Sorting by: <span id="current-sort-display">Default</span> (Shift+Click header to add sort column)
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Actions and Summary Section -->
+  <div class="data-actions-summary-container">
+    <!-- Data Summary Accordion -->
+    <div class="data-summary-section">
+      <button class="data-summary-toggle" aria-expanded="false">
+        <div class="data-summary-content">
+          <!-- Summary content will be populated by JavaScript -->
+        </div>
+        <span class="data-summary-arrow">▼</span>
+      </button>
+      <div class="data-details-section">
+        <div class="data-details-content">
+          <!-- Detailed metadata will be populated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Actions Section -->
+    <div class="data-actions-section">
+      <div class="data-actions-buttons">
+        <button id="copyData" disabled title="Copy data to clipboard">
+          📋 Copy
+        </button>
+        <div class="dropdown">
+          <button id="exportBtn" class="dropdown-btn" disabled title="Export data">
+            📥 Export ▼
+          </button>
+          <div class="dropdown-content">
+            <button id="exportCSV">Export as CSV</button>
+            <button id="exportExcel">Export as Excel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Query Data Container -->
+  <div id="queryData" class="result-container">
+    <!-- Filled by JavaScript -->
+  </div>
+  <script src="xlsx.full.min.js"></script>
+  <script src="js/keywordDistributionChart.js"></script>
+  <script src="js/clicksVsImpressionsChart.js"></script>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

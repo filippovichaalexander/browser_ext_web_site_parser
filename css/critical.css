@@ -1,0 +1,257 @@
+/* Critical CSS for Google Search Console Extension
+ * Contains only the most essential styles needed for initial rendering
+ * Updated with modern design system
+ */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'SF Pro Display', sans-serif;
+  width: 800px;
+  min-height: 550px;
+  margin: 0;
+  padding: 16px;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #202124;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8f0fe 100%);
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #1a73e8;
+}
+
+/* Enhanced Header Critical Styles */
+.enhanced-header {
+  background: linear-gradient(135deg, #4285f4, #34a853);
+  color: white;
+  padding: 20px;
+  margin: 0 -15px 15px -15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -15px;
+}
+
+.auth-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.auth-status {
+  font-size: 12px;
+  color: #666;
+  margin-right: auto;
+}
+
+button {
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-image: linear-gradient(135deg, #6c757d, #495057);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  filter: brightness(1.05);
+}
+
+#authSignIn { 
+  background-image: linear-gradient(135deg, #34a853, #2e7d32); 
+}
+
+#authSignOut { 
+  background-image: linear-gradient(135deg, #ea4335, #d32f2f); 
+}
+
+#fetchData { 
+  background-image: linear-gradient(135deg, #4285F4, #1a73e8); 
+}
+
+.no-data {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+#status {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+  min-height: 15px;
+}
+
+/* Status indicator */
+.status-message {
+  font-size: 12px;
+  padding: 5px 0;
+  color: #666;
+}
+
+.status-error {
+  color: #d93025;
+}
+
+/* Modern Input Focus States */
+input:focus, select:focus {
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+  outline: none;
+}
+
+/* Modern Metric Cards */
+.metric-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Fullscreen Mode Styles */
+body.fullscreen-mode {
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  max-width: none; /* Override any max-width from popup mode */
+  min-height: 100vh; /* Ensure it takes full viewport height */
+  padding: 0; /* Remove padding for true fullscreen */
+  overflow-y: auto; /* Allow vertical scroll if content exceeds viewport */
+  overflow-x: auto; /* Enable horizontal scrolling when needed */
+}
+
+/* Adjust header for fullscreen */
+.fullscreen-mode div[style*="background: linear-gradient"] {
+  margin: 0 !important; /* Remove margins that were for popup view */
+  border-radius: 0 !important; /* Remove border radius for full width */
+  padding: 15px 20px !important; /* Adjust padding if needed */
+  box-sizing: border-box; 
+}
+
+/* Allow content containers to expand in fullscreen */
+.fullscreen-mode .settings-container,
+.fullscreen-mode .action-container,
+.fullscreen-mode .search-filter-container,
+.fullscreen-mode .dashboard-board,
+.fullscreen-mode #queryDataContainer {
+  width: auto; /* Allow them to expand within the new body width */
+  max-width: none; /* Remove any max-width constraints */
+  margin-left: 20px !important; /* Add some padding from the edge */
+  margin-right: 20px !important;
+  box-sizing: border-box;
+}
+
+/* Critical Form Layout Styles - Must load immediately to prevent FOUC */
+.settings-container {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: 15px;
+  align-items: flex-end !important;
+  margin-bottom: 15px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  overflow: visible;
+  position: relative;
+  z-index: 30;
+}
+
+.setting-group {
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Site Property - largest section */
+.settings-container .setting-group:first-child {
+  min-width: 0;
+  flex: 2;
+  max-width: 350px;
+}
+
+/* Date Range - medium section */
+.settings-container .setting-group:nth-child(2) {
+  flex: 1;
+  min-width: 120px;
+  max-width: 200px;
+}
+
+/* Keyword Limit - small section */
+.settings-container .setting-group:nth-child(3) {
+  flex: 0 0 120px;
+  min-width: 100px;
+}
+
+.setting-group label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+  display: block;
+  font-weight: 500;
+}
+
+.setting-group select, .setting-group input[type="number"], .setting-group input[type="date"] {
+  padding: 12px 16px;
+  border: 2px solid #e8eaed;
+  border-radius: 8px;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 500;
+}
+
+.setting-group select:focus, .setting-group input[type="number"]:focus, .setting-group input[type="date"]:focus {
+  border-color: #4285f4;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.1);
+  outline: none;
+  background: white;
+}
+
+/* Adjust the main data table container's height in fullscreen */
+.fullscreen-mode #queryDataContainer {
+  /* Calculate height based on other elements.
+     Adjust 450px based on the actual combined height of header, settings, actions, etc.
+     This allows the table to fill remaining vertical space. */
+  height: calc(100vh - 450px);
+  max-height: none; /* Allow it to be taller than in popup mode */
+  overflow-y: auto; /* Ensure table content is scrollable if it overflows */
+  overflow-x: auto; /* Enable horizontal scrolling for wide tables */
+}
+
+/* Ensure the main content area below the header in fullscreen has appropriate spacing */
+.fullscreen-mode .settings-container {
+    margin-top: 0px !important; /* Reset margin if any was set for popup mode */
+    padding-top: 20px; /* Add padding at the top of the settings container for spacing from the header */
+}
+
+/* If you have a main content wrapper around multiple sections, ensure it allows full height */
+.fullscreen-mode .main-content-wrapper {
+    height: calc(100vh - 60px); /* Adjust 60px based on your actual header height */
+    overflow-y: auto; /* Allow this wrapper to scroll if its content is too tall */
+    padding-left: 20px; /* Consistent padding with other fullscreen elements */
+    padding-right: 20px;
+    box-sizing: border-box;
+}

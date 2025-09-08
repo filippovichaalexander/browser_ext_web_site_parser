@@ -1,0 +1,85 @@
+/* Enhanced Header Styles for GSC Extension
+ * Based on Google's brand colors and modern design principles
+ */
+
+.enhanced-header {
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    color: white;
+    padding: 20px;
+    margin: 0 -15px 15px -15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: -15px;
+    text-align: center;
+}
+
+.header-content {
+    flex: 1;
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.header-subtitle {
+    opacity: 0.9;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.header-auth-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.header-auth-status {
+    color: rgba(255,255,255,0.8);
+    font-size: 14px;
+    font-weight: normal;
+    margin-right: 10px;
+}
+
+.header-auth-button {
+    padding: 8px 16px;
+    font-size: 12px;
+    border-radius: 4px;
+    color: white;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.header-auth-signin {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.header-auth-signin:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.header-auth-signout {
+    background: rgba(234,67,53,0.8);
+    border: 1px solid rgba(234,67,53,0.9);
+}
+
+.header-auth-signout:hover {
+    background: rgba(234,67,53,1);
+}
+
+/* Color variations for different themes */
+.header-google-blue {
+    background: linear-gradient(135deg, #4285f4, #1a73e8);
+}
+
+.header-google-green {
+    background: linear-gradient(135deg, #34a853, #137333);
+}
+
+.header-classic-blue {
+    background: linear-gradient(135deg, #1a73e8, #1557b0);
+} 

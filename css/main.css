@@ -1,0 +1,281 @@
+/* Main CSS for Google Search Console Extension 
+ * Contains non-critical styles that can be loaded after initial page rendering
+ */
+
+/* Custom URL field disabled state */
+#customUrlInput:disabled {
+  background-color: #f5f5f5 !important;
+  color: #666 !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+#customUrlHelp {
+  border-left: 3px solid #e8eaed;
+  background-color: #f8f9fa;
+  color: #666;
+  font-size: 12px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+/* Button styles */
+button:hover {
+   filter: brightness(1.1);
+}
+
+button:active {
+   transform: scale(0.98);
+}
+
+button:disabled {
+  background-image: linear-gradient(to right bottom, #adb5bd, #9fa6ad);
+  cursor: not-allowed;
+  opacity: 0.7;
+  filter: grayscale(50%);
+}
+
+/* Premium banner styles */
+.premium-banner {
+  background-color: #e8f0fe;
+  border-left: 4px solid #1a73e8;
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: #1a73e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.premium-badge {
+  background-color: #1a73e8;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.coming-soon {
+  color: #5f6368;
+  font-size: 11px;
+  margin-left: 5px;
+}
+
+/* Collapsible section styles */
+.collapsible-section {
+  margin-bottom: 15px;
+}
+
+.collapsible-toggle {
+  background-image: linear-gradient(to right bottom, #6ba8fd, #4285f4);
+  color: white;
+  text-align: left;
+  font-weight: 500;
+  border: none;
+}
+
+.collapsible-content {
+  display: none;
+  padding-top: 10px;
+  overflow: hidden;
+}
+
+.collapsible-content.expanded {
+  display: block;
+}
+
+/* Settings & actions - moved to critical.css to prevent FOUC */
+
+.setting-group-inline {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 15px;
+  align-items: flex-end;
+  flex-grow: 1;
+  flex-basis: 40%;
+}
+
+/* Note: Main .setting-group styles moved to critical.css to prevent FOUC */
+
+.comparison-group label {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Data table styles */
+.data-table-container {
+  max-height: 500px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.data-table th {
+  background-color: #f5f5f5;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+}
+
+.data-table th.sortable:hover {
+  background-color: #eaeaea;
+}
+
+.data-table th.current-sort {
+  background-color: #e3effd;
+  color: #1a73e8;
+}
+
+.data-table th.current-sort:after {
+  content: '↓';
+  margin-left: 5px;
+  font-size: 0.8em;
+}
+
+.data-table th.current-sort.sort-asc:after {
+  content: '↑';
+}
+
+.data-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #f0f0f0;
+  color: #333;
+}
+
+.data-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Dashboard styles */
+.dashboard-tabs {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 15px;
+}
+
+.dashboard-tab {
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: #5f6368;
+}
+
+.dashboard-tab.active {
+  color: #1a73e8;
+  border-bottom-color: #1a73e8;
+}
+
+.dashboard-panel {
+  display: none;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.dashboard-panel.active {
+  display: block;
+}
+
+/* Chart styles */
+.chart-container {
+  height: 300px;
+  margin-bottom: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Metrics summary */
+.metrics-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.metric-card {
+  flex: 1;
+  min-width: 120px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.metric-value {
+  font-size: 22px;
+  font-weight: 500;
+  color: #1a73e8;
+  margin-bottom: 5px;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #5f6368;
+}
+
+/* Pagination */
+.pagination-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  font-size: 13px;
+}
+
+.pagination-info {
+  color: #666;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.pagination-controls button {
+  padding: 5px 10px;
+  font-size: 12px;
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background-color: #e8e8e8;
+}
+
+/* Responsive adjustments - only for very small screens (mobile) */
+@media (max-width: 600px) {
+  body {
+    width: 95%;
+  }
+  
+  /* Extension popup should always maintain horizontal layout */
+  /* .settings-container rule removed to prevent conflicts */
+  
+  .metrics-summary {
+    flex-direction: column;
+  }
+}

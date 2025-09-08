@@ -1,0 +1,48 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+  "manifest_version": 3,
+  "name": "GSC Page Keywords (API Ver)",
+  "version": "2.3",
+  "description": "Check keywords for current page/domain directly via GSC API",
+  "author": "Ramin Babaeihemmati",
+  "homepage_url": "https://raminbh.github.io/gsc-extension-privacy/privacy_policy.html",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "identity"
+  ],
+  "host_permissions": [
+    "https://www.googleapis.com/webmasters/v3/*",
+    "https://accounts.google.com/o/oauth2/*"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "oauth2": {
+    "client_id": "69787935589-9oj9u2b95smac8nlsf9kufo3mp8sk8to.apps.googleusercontent.com", 
+    "scopes": [
+      "https://www.googleapis.com/auth/webmasters.readonly"
+    ]
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'; default-src 'self'; connect-src 'self' https://www.googleapis.com https://accounts.google.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'"
+    
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["chart.min.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
