@@ -30,7 +30,7 @@
     "128": "images/icon128.png"
   },
   "oauth2": {
-    "client_id": "69787935589-9oj9u2b95smac8nlsf9kufo3mp8sk8to.apps.googleusercontent.com", 
+    "client_id": "144954911493-c42k5dgr1ngasvl6nuqssl5f9qnrftjf.apps.googleusercontent.com", 
     "scopes": [
       "https://www.googleapis.com/auth/webmasters.readonly"
     ]
